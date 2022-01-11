@@ -1,7 +1,7 @@
 const inquirer = require('inquirer');
 const Manager = require('./lib/manager');
 const Engineer = require('./lib/engineer');
-// const Intern = require('./lib/intern');
+const Intern = require('./lib/intern');
 
 function Team() {
     this.managers = [];
@@ -76,10 +76,11 @@ Team.prototype.addTeam = function() {
 Team.prototype.addEmployee = function() {
     inquirer.prompt(
         {
-            type: 'checkbox',
+            type: 'list',
             name: 'add',
             message: 'Would you like to add an Engineer, an Intern, or Quit',
-            choices: ['Engineer', 'Intern', 'Quit'],
+            choices: ['Quit', 'Engineer', 'Intern'],
+            default: 0,
             validate: addInput => {
                 if (addInput) {
                     return true;
@@ -92,10 +93,10 @@ Team.prototype.addEmployee = function() {
     )
     .then(({ add }) => {
         
-        if (add[0] === 'Engineer') {
+        if (add === 'Engineer') {
             this.addEngineer();
-        } else if (add[0] === 'Intern') {
-            console.log('Intern');
+        } else if (add === 'Intern') {
+            this.addIntern();
         } else {
             console.log('Quit');
         }
@@ -161,6 +162,70 @@ Team.prototype.addEngineer = function() {
         ])
         .then(({ name, id, email, github }) => {
             this.engineers.push(new Engineer(name, id, email, github));
+            console.log(this);
+            this.addEmployee();
+        });
+};
+
+Team.prototype.addIntern = function() {
+
+    inquirer
+        .prompt([
+            {
+                type: 'input',
+                name: 'name',
+                message: 'Enter employee name',
+                validate: nameInput => {
+                    if (nameInput) {
+                        return true;
+                    } else {
+                        console.log('Please enter employee name!');
+                        return false;
+                    }
+                }
+            },
+            {
+                type: 'input',
+                name: 'id',
+                message: 'Enter the employee ID',
+                validate: idInput => {
+                    if (idInput) {
+                        return true;
+                    } else {
+                        console.log('Please enter employee ID!');
+                        return false;
+                    }
+                }
+            },
+            {
+                type: 'input',
+                name: 'email',
+                message: 'Enter employee email address',
+                validate: emailInput => {
+                    if (emailInput) {
+                        return true;
+                    } else {
+                        console.log('Please enter employee email address!');
+                        return false;
+                    }
+                }
+            },
+            {
+                type: 'input',
+                name: 'school',
+                message: 'Enter employee school name',
+                validate: githubInput => {
+                    if (githubInput) {
+                        return true;
+                    } else {
+                        console.log('Please enter a school name')
+                        return false;
+                    }
+                }
+            }
+        ])
+        .then(({ name, id, email, school }) => {
+            this.interns.push(new Intern(name, id, email, school));
             console.log(this);
             this.addEmployee();
         });
