@@ -9,8 +9,6 @@ This is an app written using node.js, HTML, CSS, and inquirer.js. The app uses p
 - [Installation](#installation)
 - [Usage](#usage)
 - [License](#license)
-- [Contribute](#contribution)
-- [Tests](#tests)
 - [Questions](#questions)
 
 ## Installation
